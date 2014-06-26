@@ -5,6 +5,9 @@ angular.module('myNewProjectApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
+    }, {
+      'title': 'Tasks',
+      'link': '/tasks'
     }];
     
     $scope.isActive = function(route) {

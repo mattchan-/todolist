@@ -1,0 +1,27 @@
+<div ng-include="'partials/navbar'"></div>
+
+<div id="wrapper">
+  <h1>All Tasks</h1>
+
+  <div class="row tasks">
+    <table>
+      <thead>
+        <th>Description</th>
+        <th>Delete?</th>
+        <th>Complete</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="task in allTasks | orderBy : orderProp">
+          <td><span class='done-{{task.completed}}'>{{task.description}}</span></td>
+          <td><a href='' ng-click='deleteTask(task, task._id)'>Delete</a></td>
+          <td><input type="checkbox" ng-model='task.completed' ng-click='completeTask(task, task._id)'/></td>
+        </tr>
+      </tbody>
+    </table>
+    <form id='newTask' ng-submit="createTask()">
+      <label type="text">Add Task:</label>
+      <input type="text" ng-model="taskText" placeholder="I need to...">
+      <input class="btn-primary" type="submit" value="Add Task">
+    </form>
+  </div>
+</div>

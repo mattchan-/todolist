@@ -12,6 +12,10 @@ angular.module('myNewProjectApp', [
         templateUrl: 'partials/main',
         controller: 'MainCtrl'
       })
+      .when('/tasks', {
+        templateUrl: 'partials/tasks',
+        controller: 'TaskCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
