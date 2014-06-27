@@ -18,23 +18,21 @@ angular.module('myNewProjectApp')
         .success(function(data) {
           $scope.taskText = '';
           $scope.allTasks.push(data);
-        })
-        .error(function(data) {
-          console.log(data);
         });
     };
 
-    $scope.completeTask = function(task, taskId) {
-      $http.post('/api/tasks/complete/' + taskId)
+    $scope.completeTask = function(task) {
+      $http.post('/api/tasks/complete/' + task._id)
         .success(function(data) {
           $scope.allTasks.splice($scope.allTasks.indexOf(task), 1, data);
         });
     };
 
-    $scope.deleteTask = function(task, taskId) {
-      $http.delete('/api/tasks/delete/' + taskId)
+    $scope.deleteTask = function(task) {
+      $http.delete('/api/tasks/delete/' + task._id)
         .success(function() {
           $scope.allTasks.splice($scope.allTasks.indexOf(task), 1);
         });
     };
+
   });
