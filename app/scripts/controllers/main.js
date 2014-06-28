@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('myNewProjectApp')
-  .controller('MainCtrl', function ($scope, $http) {
+  .controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
     $http.get('/api/awesomeThings').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
     });
-  })
-  .controller('TaskCtrl', function ($scope, $http) {
+  }])
+  .controller('TaskCtrl', ['$scope', '$http', function ($scope, $http) {
     $http.get('/api/tasks').success(function(allTasks) {
       $scope.allTasks = allTasks;
     });
@@ -18,23 +18,24 @@ angular.module('myNewProjectApp')
         .success(function(data) {
           $scope.taskText = '';
           $scope.allTasks.push(data);
-        })
-        .error(function(data) {
-          console.log(data);
         });
     };
 
-    $scope.completeTask = function(task, taskId) {
-      $http.post('/api/tasks/complete/' + taskId)
+    $scope.completeTask = function(task) {
+      $http.post('/api/tasks/complete/' + task._id);
+    };
+
+    $scope.deleteTask = function(task) {
+      $http.delete('/api/tasks/delete/' + task._id)
         .success(function(data) {
-          $scope.allTasks.splice($scope.allTasks.indexOf(task), 1, data);
+          var oldTasks = $scope.allTasks;
+          $scope.allTasks = [];
+          angular.forEach(oldTasks, function(task) {
+            if (task._id !== data._id) {
+              $scope.allTasks.push(task);
+            }
+          });
         });
     };
 
-    $scope.deleteTask = function(task, taskId) {
-      $http.delete('/api/tasks/delete/' + taskId)
-        .success(function() {
-          $scope.allTasks.splice($scope.allTasks.indexOf(task), 1);
-        });
-    };
-  });
+  }]);

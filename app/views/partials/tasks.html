@@ -11,16 +11,16 @@
         <th>Complete</th>
       </thead>
       <tbody>
-        <tr ng-repeat="task in allTasks | orderBy : orderProp">
+        <tr ng-repeat="task in allTasks">
           <td><span class='done-{{task.completed}}'>{{task.description}}</span></td>
-          <td><a href='' ng-click='deleteTask(task, task._id)'>Delete</a></td>
-          <td><input type="checkbox" ng-model='task.completed' ng-click='completeTask(task, task._id)'/></td>
+          <td><a href='' ng-click='deleteTask(task)'>Delete</a></td>
+          <td><input type="checkbox" ng-model='task.completed' ng-click='completeTask(task)'/></td>
         </tr>
       </tbody>
     </table>
     <form id='newTask' ng-submit="createTask()">
       <label type="text">Add Task:</label>
-      <input type="text" ng-model="taskText" placeholder="I need to...">
+      <input type="text" ng-model="taskText" required placeholder="I need to...">
       <input class="btn-primary" type="submit" value="Add Task">
     </form>
   </div>
