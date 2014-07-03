@@ -1,27 +1,45 @@
-<div ng-include="'partials/navbar'"></div>
+<div ng-include='"partials/navbar"'></div>
 
-<div id="wrapper">
+<div id='wrapper'>
   <h1>All Tasks</h1>
 
-  <div class="row tasks">
-    <table>
-      <thead>
-        <th>Description</th>
-        <th>Delete?</th>
-        <th>Complete</th>
-      </thead>
-      <tbody>
-        <tr ng-repeat="task in allTasks">
-          <td><span class='done-{{task.completed}}'>{{task.description}}</span></td>
+  <div class='row tasks'>
+    <div class='col-md-6'>
+      <div class='input-group'>
+        <span class='input-group-addon'>Search</span>
+        <input class='form-control' type='text' ng-model='searchTerm.description'>
+      </div>
+      <div class='btn-group'>
+        <a class='btn btn-default' ng-click='markAll(true)'>All</a>
+        <a class='btn btn-default' ng-click='markAll(false)'>None</a>
+        <a class='btn btn-default' ng-click='archiveCompleted()'>Archive</a>
+      </div>
+    </div>
+  </div>
+
+  <div class='row tasks'>
+    <div class='col-md-6'>
+      <table>
+        <tr ng-repeat='task in activeTasks | filter:searchTerm | filter:filterArchived'>
+          <td><input type='checkbox' ng-model='task.completed' ng-click='completeTask(task)'/></td>
+          <td class='description'><span class='done-{{task.completed}}'>{{task.description}}</span></td>
           <td><a href='' ng-click='deleteTask(task)'>Delete</a></td>
-          <td><input type="checkbox" ng-model='task.completed' ng-click='completeTask(task)'/></td>
         </tr>
-      </tbody>
-    </table>
-    <form id='newTask' ng-submit="createTask()">
-      <label type="text">Add Task:</label>
-      <input type="text" ng-model="taskText" required placeholder="I need to...">
-      <input class="btn-primary" type="submit" value="Add Task">
-    </form>
+      </table>
+    </div>
+  </div>
+  <div class='row tasks'>
+    <div class='col-md-6'>
+      <form id='newTask' ng-submit='createTask()'>
+        <div class='form-group'>
+          <div class='input-group'>
+            <input type='text' class='form-control' ng-model='taskText' required placeholder='I need to...'>
+            <span class='input-group-btn'>
+              <input class='btn btn-primary' type='submit' value='Add Task'>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

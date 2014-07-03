@@ -6,36 +6,55 @@ angular.module('myNewProjectApp')
       $scope.awesomeThings = awesomeThings;
     });
   }])
-  .controller('TaskCtrl', ['$scope', '$http', function ($scope, $http) {
-    $http.get('/api/tasks').success(function(allTasks) {
-      $scope.allTasks = allTasks;
-    });
+  .controller('TaskCtrl', ['$scope', '$http', 'Task', function ($scope, $http, Task) {
+    $scope.activeTasks = Task.query();
 
-    $scope.orderProp = ['completed', 'updated_at'];
+    $scope.filterArchived = function(task) {
+      return !task.archived;
+    };
 
     $scope.createTask = function() {
-      $http.post('/api/tasks/create', { description: $scope.taskText })
-        .success(function(data) {
-          $scope.taskText = '';
-          $scope.allTasks.push(data);
-        });
+      var task = { description: $scope.taskText };
+      Task.post(task, function(data) {
+        $scope.taskText = '';
+        $scope.activeTasks.push(data);
+      }, function(err) {
+        console.log(err);
+      });
     };
 
     $scope.completeTask = function(task) {
-      $http.post('/api/tasks/complete/' + task._id);
+      task.completed = !task.completed;
+      Task.update({id: task._id}, task);
+    };
+
+    $scope.markAll = function(complete) {
+      angular.forEach($scope.activeTasks, function(task) {
+        if (task.completed !== complete) {
+          task.completed = complete;
+          Task.update({id: task._id}, task);
+        }
+      });
+    };
+
+    $scope.archiveCompleted = function() {
+      angular.forEach($scope.activeTasks, function(task) {
+        if (!task.archived && task.completed) {
+          task.archived = true;
+          Task.update({id: task._id}, task);
+        }
+      });
     };
 
     $scope.deleteTask = function(task) {
-      $http.delete('/api/tasks/delete/' + task._id)
-        .success(function(data) {
-          var oldTasks = $scope.allTasks;
-          $scope.allTasks = [];
-          angular.forEach(oldTasks, function(task) {
-            if (task._id !== data._id) {
-              $scope.allTasks.push(task);
-            }
-          });
+      Task.delete({id: task._id}, function(data) {
+        var oldTasks = $scope.activeTasks;
+        $scope.activeTasks = [];
+        angular.forEach(oldTasks, function(task) {
+          if (task._id !== data._id) {
+            $scope.activeTasks.push(task);
+          }
         });
+      });
     };
-
   }]);

@@ -15,6 +15,10 @@ body {
   padding-bottom: 20px;
 }
 
+input {
+  margin-bottom: 10px;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -90,18 +94,15 @@ body {
   }
 }
 
+.input-group, .btn-group {
+  margin-bottom: 10px;
+}
+
 .tasks {
   table {
-    border-collapse:collapse;
+    border: 1px solid #CCC;
     border-spacing:1px;
-    background:#CCC;
-    width: 50%;
-    margin-bottom: 15px;
-    th {
-      background:#EEE;
-      font-weight:600;
-      padding:10px 20px;
-    }
+    margin-bottom: 10px;
     tbody {
       padding:0; margin:0;
       border-collapse:collapse;
@@ -109,16 +110,27 @@ body {
     }
     td {
       background:#FFF;
-      padding:5px 10px;
+      padding: 5px 5px;
+      text-align: left;
+      &.description {
+        width: 100%;
+      }
       .done-true {
         text-decoration: line-through;
         color: gray;
       }
     }
+
   }
   #newTask {
-    label {
-      display: block;
+    .form-control {
+      border-right: none;
+    }
+  }
+  .options {
+    input:first-child {
+      color: #DDD;
     }
   }
 }
+
