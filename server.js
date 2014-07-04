@@ -28,17 +28,19 @@ require('./lib/config/dummydata');
 
 // Setup Express
 var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 require('./lib/config/express')(app);
 require('./lib/routes')(app);
 
 // Start server
-var server = app.listen(config.port, config.ip, function () {
+server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %s:%d, in %s mode', config.ip, config.port, app.get('env'));
 });
 
 //  Socketio setup
-var io = require('socket.io').listen(server);
 io.sockets.on('connection', require('./lib/socket'));
 
 // Expose app
 exports = module.exports = app;
+exports = module.exports = io;

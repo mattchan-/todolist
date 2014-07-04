@@ -42,7 +42,6 @@ angular.module('myNewProjectApp')
     $scope.createTask = function() {
       var task = { description: $scope.taskText };
       Task.post(task, function(data) {
-        console.log(data);
         socket.emit('create:task', data);
         $scope.activeTasks.push(data);
         $scope.taskText = '';
