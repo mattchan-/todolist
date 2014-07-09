@@ -8,6 +8,15 @@ angular.module('myNewProjectApp')
     }, {
       'title': 'Tasks',
       'link': '/tasks'
+    }, {
+      'title': 'Signup',
+      'link': '/signup'
+    }, {
+      'title': 'Login',
+      'link': '/login'
+    }, {
+      'title': 'Settings',
+      'link': '/settings'
     }];
     
     $scope.isActive = function(route) {

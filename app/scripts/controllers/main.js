@@ -1,3 +1,4 @@
+/*jshint camelcase: false */
 'use strict';
 
 angular.module('myNewProjectApp')
@@ -6,7 +7,7 @@ angular.module('myNewProjectApp')
       $scope.awesomeThings = awesomeThings;
     });
   }])
-  .controller('TaskCtrl', ['$scope', 'Task', 'socket', function ($scope, Task, socket) {
+  .controller('TaskCtrl', ['$scope', 'Task', 'socket', 'Dropbox', function ($scope, Task, socket, Dropbox) {
     $scope.activeTasks = Task.query();
 
     socket.on('create:task', function(data) {
@@ -45,6 +46,7 @@ angular.module('myNewProjectApp')
         socket.emit('create:task', data);
         $scope.activeTasks.push(data);
         $scope.taskText = '';
+        updateFile();
       }, function(err) {
         console.log(err);
       });
@@ -52,18 +54,14 @@ angular.module('myNewProjectApp')
 
     $scope.completeTask = function(task) {
       task.completed = !task.completed;
-      Task.update({id: task._id}, task, function(data) {
-        socket.emit('update:task', data);
-      });
+      updateTask(task);
     };
 
     $scope.archiveCompleted = function() {
       angular.forEach($scope.activeTasks, function(task) {
         if (!task.archived && task.completed) {
           task.archived = true;
-          Task.update({id: task._id}, task, function (data) {
-            socket.emit('update:task', data);
-          });
+          updateTask(task);
         }
       });
     };
@@ -72,9 +70,7 @@ angular.module('myNewProjectApp')
       angular.forEach($scope.activeTasks, function(task) {
         if (task.completed !== complete) {
           task.completed = complete;
-          Task.update({id: task._id}, task, function(data) {
-            socket.emit('update:task', data);
-          });
+          updateTask(task);
         }
       });
     };
@@ -87,8 +83,34 @@ angular.module('myNewProjectApp')
         angular.forEach(oldTasks, function(task) {
           if (task._id !== data._id) {
             $scope.activeTasks.push(task);
+            updateFile();
           }
         });
       });
     };
+
+    /********** Helper Functions **********/
+
+    function updateTask(task) {
+      Task.update({id: task._id}, task, function(data) {
+        socket.emit('update:task', data);
+        updateFile();
+      });
+    }
+
+    function updateFile() {
+      var formattedTasks = '';
+      angular.forEach($scope.activeTasks, function(task) {
+        var buffer = [];
+        buffer.push(task._id);
+        buffer.push(task.description);
+        buffer.push(task.archived);
+        buffer.push(task.completed);
+        buffer.push(task.created_at);
+        buffer.push(task.updated_at);
+        buffer = buffer.join(',');
+        formattedTasks += buffer;
+      });
+      Dropbox.update({tasks: formattedTasks});
+    }
   }]);

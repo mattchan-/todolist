@@ -26,6 +26,9 @@ fs.readdirSync(modelsPath).forEach(function (file) {
 // Populate empty DB with sample data
 require('./lib/config/dummydata');
 
+// Passport Configuration
+var passport = require('./lib/config/passport');
+
 // Setup Express
 var app = express();
 var server = require('http').Server(app);
@@ -43,4 +46,3 @@ io.sockets.on('connection', require('./lib/socket'));
 
 // Expose app
 exports = module.exports = app;
-exports = module.exports = io;
