@@ -9,8 +9,10 @@ angular.module('myNewProjectApp')
   }])
   .controller('TaskCtrl', ['$scope', 'Task', 'socket', 'Dropbox', 'Auth', function ($scope, Task, socket, Dropbox, Auth) {
 
-    $scope.isAuthorizedDropbox = function() {
-      return Auth.isAuthorizedDropbox();
+    $scope.dropboxConnected = function() {
+      if (Auth.isLoggedIn()) {
+        return Auth.dropboxConnected();
+      }
     };
 
     $scope.activeTasks = Task.query();

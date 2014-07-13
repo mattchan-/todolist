@@ -1,9 +1,9 @@
 <div ng-include='"partials/navbar"'></div>
 
-<div ng-show='!isAuthorizedDropbox()'>
+<div ng-show='!dropboxConnected()'>
   <a href="/auth/dropbox" target='_self' class='btn btn-primary btn-lg'>Connect to Dropbox</a>
 </div>
-<div id='wrapper' ng-show='isAuthorizedDropbox()'>
+<div id='wrapper' ng-show='dropboxConnected()'>
   <h1>All Tasks</h1>
 
   <div class='row tasks'>
