@@ -5,6 +5,7 @@ angular.module('myNewProjectApp')
     
     // Get currentUser from cookie
     $rootScope.currentUser = $cookieStore.get('user') || null;
+    console.log('cookie store', $cookieStore.get('user'));
     $cookieStore.remove('user');
 
     return {
@@ -24,6 +25,7 @@ angular.module('myNewProjectApp')
           password: user.password
         }, function(user) {
           $rootScope.currentUser = user;
+          console.log('user info', user);
           return cb();
         }, function(err) {
           return cb(err);
@@ -107,5 +109,9 @@ angular.module('myNewProjectApp')
         var user = $rootScope.currentUser;
         return !!user;
       },
+
+      isAuthorizedDropbox: function() {
+        return $rootScope.authorizedDropbox;
+      }
     };
   });

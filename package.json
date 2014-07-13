@@ -19,6 +19,7 @@
     "passport": "~0.2.0",
     "passport-dropbox-oauth2": "^0.1.6",
     "passport-local": "~0.1.6",
+    "redis": "^0.10.3",
     "static-favicon": "~1.0.1"
   },
   "devDependencies": {

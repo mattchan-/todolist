@@ -5,7 +5,6 @@ angular.module('myNewProjectApp')
   .controller('DropboxCtrl', ['$scope', '$resource', 'Dropbox', 'Task', function ($scope, $resource, Dropbox, Task) {
     $scope.entries = Dropbox.query();
     $scope.tasks = Task.query();
-    $scope.tasks.$promise.then(console.log($scope.tasks));
 
     var formattedTasks = '';
     $scope.updateFile = function() {

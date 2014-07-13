@@ -7,7 +7,12 @@ angular.module('myNewProjectApp')
       $scope.awesomeThings = awesomeThings;
     });
   }])
-  .controller('TaskCtrl', ['$scope', 'Task', 'socket', 'Dropbox', function ($scope, Task, socket, Dropbox) {
+  .controller('TaskCtrl', ['$scope', 'Task', 'socket', 'Dropbox', 'Auth', function ($scope, Task, socket, Dropbox, Auth) {
+
+    $scope.isAuthorizedDropbox = function() {
+      return Auth.isAuthorizedDropbox();
+    };
+
     $scope.activeTasks = Task.query();
 
     socket.on('create:task', function(data) {
@@ -55,6 +60,7 @@ angular.module('myNewProjectApp')
     $scope.completeTask = function(task) {
       task.completed = !task.completed;
       updateTask(task);
+      updateFile();
     };
 
     $scope.archiveCompleted = function() {
@@ -64,6 +70,7 @@ angular.module('myNewProjectApp')
           updateTask(task);
         }
       });
+      updateFile();
     };
 
     $scope.markAll = function(complete) {
@@ -73,6 +80,7 @@ angular.module('myNewProjectApp')
           updateTask(task);
         }
       });
+      updateFile();
     };
 
     $scope.deleteTask = function(task) {
@@ -83,9 +91,9 @@ angular.module('myNewProjectApp')
         angular.forEach(oldTasks, function(task) {
           if (task._id !== data._id) {
             $scope.activeTasks.push(task);
-            updateFile();
           }
         });
+        updateFile();
       });
     };
 
@@ -94,7 +102,6 @@ angular.module('myNewProjectApp')
     function updateTask(task) {
       Task.update({id: task._id}, task, function(data) {
         socket.emit('update:task', data);
-        updateFile();
       });
     }
 

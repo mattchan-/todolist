@@ -2,7 +2,10 @@
 
 angular.module('myNewProjectApp')
   .controller('LoginCtrl', function ($scope, Auth, $location) {
-    $scope.user = {};
+    $scope.user = {
+      email: 'test@test.com',
+      password: 'test'
+    };
     $scope.errors = {};
 
     $scope.login = function(form) {
@@ -14,8 +17,7 @@ angular.module('myNewProjectApp')
           password: $scope.user.password
         })
         .then( function() {
-          // Logged in, redirect to home
-          $location.path('/');
+          $location.path('/tasks');
         })
         .catch( function(err) {
           err = err.data;
