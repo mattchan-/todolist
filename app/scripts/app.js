@@ -14,7 +14,8 @@ angular.module('myNewProjectApp', [
       })
       .when('/tasks', {
         templateUrl: 'partials/tasks',
-        controller: 'TaskCtrl'
+        controller: 'TaskCtrl',
+        authenticate: true
       })
       .when('/login', {
         templateUrl: 'partials/login',

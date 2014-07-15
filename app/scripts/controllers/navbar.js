@@ -5,12 +5,6 @@ angular.module('myNewProjectApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
-    }, {
-      'title': 'Tasks',
-      'link': '/tasks'
-    }, {
-      'title': 'Settings',
-      'link': '/settings'
     }];
 
     $scope.logout = function() {
@@ -19,7 +13,7 @@ angular.module('myNewProjectApp')
         $location.path('/login');
       });
     };
-    
+
     $scope.isActive = function(route) {
       return route === $location.path();
     };

@@ -32,7 +32,11 @@ var passport = require('./lib/config/passport');
 // Setup Express
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
+var socketManager = require('./lib/socketManager');
+
+socketManager.init(server);
+
+var io = socketManager.io;
 require('./lib/config/express')(app);
 require('./lib/routes')(app);
 
@@ -41,8 +45,6 @@ server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %s:%d, in %s mode', config.ip, config.port, app.get('env'));
 });
 
-//  Socketio setup
-io.sockets.on('connection', require('./lib/socket'));
-
+io.sockets.on('connection', socketManager.socketHandler);
 // Expose app
 exports = module.exports = app;
